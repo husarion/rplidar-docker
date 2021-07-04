@@ -13,7 +13,7 @@ services:
       [
         "bash",
         "-c",
-        "source /opt/ros/ros_ws/devel/setup.bash && roslaunch /opt/ros/ros_ws/src/rplidar_ros/launch/rplidar.launch",
+        "source /opt/ros/ros_ws/devel/setup.bash && export ROS_MASTER_URI=http://127.0.0.1:11311 && roslaunch /opt/ros/ros_ws/src/rplidar_ros/launch/rplidar.launch",
       ]
     devices:
       - /dev/ttyUSB0
