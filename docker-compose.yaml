@@ -1,4 +1,4 @@
-version: "3"
+version: "2.3"
 
 services:
   ros-rplidar:
@@ -17,4 +17,3 @@ services:
       ]
     devices:
       - /dev/ttyUSB0
-    network_mode: host
