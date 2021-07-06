@@ -35,6 +35,6 @@ jobs:
         file: ./Dockerfile
         platforms: linux/arm64, linux/amd64, linux/arm/v7
         push: true
-        tags: husarion/ros-rplidar
-        cache-from: type=registry,ref=husarion/ros-rplidar
+        tags: husarion/rplidar
+        cache-from: type=registry,ref=husarion/rplidar
         cache-to: type=inline
