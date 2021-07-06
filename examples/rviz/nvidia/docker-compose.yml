@@ -19,7 +19,6 @@ services:
     build:
       context: ../../../  
       dockerfile: ./Dockerfile
-    tty: true
     privileged: true
     devices:
       - /dev/ttyUSB0
