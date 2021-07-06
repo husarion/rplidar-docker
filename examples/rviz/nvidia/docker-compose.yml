@@ -18,7 +18,7 @@ services:
       - /dev/ttyUSB0
 
   rviz-nvidia:
-    image: rosbot_remote/rviz:latest
+    image: husarion/rviz-rosbot:latest
     runtime: nvidia    
     environment: 
         - DISPLAY

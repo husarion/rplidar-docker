@@ -18,7 +18,7 @@ services:
       - /dev/ttyUSB0
 
   rviz-intel:
-    image: rosbot_remote/rviz:latest    
+    image: husarion/rviz-rosbot:latest
     environment: 
       - DISPLAY
     volumes:
