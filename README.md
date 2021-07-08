@@ -12,8 +12,6 @@ sudo docker build -t rplidar .
 ## Running a Docker image
 
 ```bash
-xhost local:root
-
 sudo docker run --rm -it \
 --device /dev/ttyUSB0 \
 rplidar \
