@@ -9,7 +9,7 @@ This repository contains a GitHub Actions workflow for auto-deployment of built 
 sudo docker build -t rplidar .
 ```
 
-## Running a Docker image
+## Running a Docker container
 
 ```bash
 sudo docker run --rm -it \
