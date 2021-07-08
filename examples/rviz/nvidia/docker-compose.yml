@@ -26,8 +26,6 @@ services:
     #     - "ROS_MASTER_URI=http://ros-master:11311"
     tty: true        # docker run -t
     command: roslaunch /opt/ros/ros_ws/src/rplidar_ros/launch/rplidar.launch
-    # depends_on: 
-    #   - ros-master
 
   # ROS 2 Foxy
   rviz-nvidia:
