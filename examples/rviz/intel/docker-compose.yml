@@ -34,4 +34,5 @@ services:
       - DISPLAY
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
-      - ./config.rviz:/home/husarion/.rviz2/default.rviz
+      - ./config.rviz:/root/.rviz2/default.rviz
+    command: ros2 run rviz2 rviz2

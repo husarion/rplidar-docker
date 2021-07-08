@@ -32,8 +32,9 @@ services:
     image: husarion/rviz2-rosbot:latest
     runtime: nvidia    
     environment: 
-        - DISPLAY
-        - NVIDIA_VISIBLE_DEVICES=all
+      - DISPLAY
+      - NVIDIA_VISIBLE_DEVICES=all
     volumes:
-        - /tmp/.X11-unix:/tmp/.X11-unix:rw
-        - ./config.rviz:/home/husarion/.rviz2/default.rviz
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ./config.rviz:/root/.rviz2/default.rviz
+    command: ros2 run rviz2 rviz2
