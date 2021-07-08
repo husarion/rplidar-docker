@@ -9,3 +9,9 @@ RUN git clone -b master https://github.com/Slamtec/rplidar_ros.git /opt/ros/ros_
 RUN cd /opt/ros/ros_ws && \
     source /opt/ros/melodic/setup.bash && \
     catkin_make -DCATKIN_ENABLE_TESTING=0 -DCMAKE_BUILD_TYPE=Release
+
+# setup entrypoint
+COPY ./ros_entrypoint.sh /
+
+ENTRYPOINT ["/ros_entrypoint.sh"]
+CMD ["bash"]

@@ -5,14 +5,14 @@ services:
   bridge:
     image: ros:foxy-ros1-bridge
     environment:
-      - "ROS_MASTER_URI=http://ros-master:11311"
+      - "ROS_MASTER_URI=http://ros-rplidar:11311"
     command: ros2 run ros1_bridge dynamic_bridge
 
-  # ROS Noetic
-  ros-master:
-      image: ros:noetic-ros-core
-      tty: true        # docker run -t
-      command: stdbuf -o L roscore
+  # # ROS Noetic
+  # ros-master:
+  #     image: ros:noetic-ros-core
+  #     tty: true        # docker run -t
+  #     command: stdbuf -o L roscore
 
   # ROS Melodic
   ros-rplidar:
@@ -22,10 +22,12 @@ services:
     privileged: true
     devices:
       - /dev/ttyUSB0
-    environment:
-        - "ROS_MASTER_URI=http://ros-master:11311"
+    # environment:
+    #     - "ROS_MASTER_URI=http://ros-master:11311"
     tty: true        # docker run -t
     command: roslaunch /opt/ros/ros_ws/src/rplidar_ros/launch/rplidar.launch
+    # depends_on: 
+    #   - ros-master
 
   # ROS 2 Foxy
   rviz-nvidia:
@@ -36,3 +38,4 @@ services:
         - NVIDIA_VISIBLE_DEVICES=all
     volumes:
         - /tmp/.X11-unix:/tmp/.X11-unix:rw
+        - ./config.rviz:/home/husarion/.rviz2/default.rviz
