@@ -19,7 +19,7 @@ services:
     command: ros2 run ros1_bridge dynamic_bridge
 
   # ROS 2 Foxy
-  rviz-nvidia:
+  rviz-intel:
     image: husarion/rviz2-rosbot:latest
     environment: 
       - DISPLAY
