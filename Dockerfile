@@ -4,9 +4,8 @@ SHELL ["/bin/bash", "-c"]
 
 WORKDIR /app
 
-RUN mkdir -p ros_ws/src
-
-RUN git clone https://github.com/Slamtec/rplidar_ros.git --branch=master ros_ws/src/rplidar_ros
+RUN mkdir -p ros_ws/src && \
+    git clone https://github.com/Slamtec/rplidar_ros.git --branch=master ros_ws/src/rplidar_ros
 
 RUN cd ros_ws && \
     source /opt/ros/melodic/setup.bash && \
