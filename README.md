@@ -3,7 +3,24 @@ Dockerized rplidar_ros package from https://github.com/Slamtec/rplidar_ros repos
 
 This repository contains a GitHub Actions workflow for auto-deployment of built Docker image to https://hub.docker.com/r/husarion/rplidar repository.
 
-## Examples
+## Building a Docker image
+
+```bash
+sudo docker build -t rplidar .
+```
+
+## Running a Docker image
+
+```bash
+xhost local:root
+
+sudo docker run --rm -it \
+--device /dev/ttyUSB0 \
+rplidar \
+roslaunch rplidar_ros rplidar.launch
+```
+
+## Examples (using Docker Compose)
 
 ### RPLIDAR container + rviz container
 
