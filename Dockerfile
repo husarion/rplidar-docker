@@ -16,6 +16,10 @@ RUN cd ros_ws \
     && source /opt/ros/melodic/setup.bash \
     && catkin_make -DCATKIN_ENABLE_TESTING=0 -DCMAKE_BUILD_TYPE=Release
 
+# clear ubuntu packages
+RUN apt clean && \
+    rm -rf /var/lib/apt/lists/*
+
 # setup entrypoint
 COPY ./ros_entrypoint.sh /
 
