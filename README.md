@@ -1,43 +1,35 @@
 # rplidar-docker
-Dockerized rplidar_ros package from https://github.com/Slamtec/rplidar_ros repository.
-
-This repository contains a GitHub Actions workflow for auto-deployment of built Docker image to https://hub.docker.com/r/husarion/rplidar repository.
-
-## Building a Docker image
-
-```bash
-sudo docker build -t rplidar .
-```
+Dockerized rplidar_ros package from [Slamtec/rplidar_ros](https://github.com/Slamtec/rplidar_ros) repository.
 
 ## Running a Docker container
 
 ```bash
-sudo docker run --rm -it \
---device /dev/ttyUSB0 \
-rplidar \
-roslaunch rplidar_ros rplidar.launch
+docker run --rm -it \
+    --device /dev/ttyUSB0 \
+    husarion/rplidar:latest \
+    roslaunch husarion_rplidar rplidar_a3.launch
 ```
 
-## Examples (using Docker Compose)
+## Examples
 
 ### RPLIDAR container + rviz container
 
-Connect RPLidar to your laptop and deppending you have NVIDIA GPU or not, choose the right example:
+Connect RPLidar to your laptop and depending you have NVIDIA GPU or not, choose the right example:
 
-#### [option 1] NVIDIA GPU
+#### NVIDIA GPU
 
 ```bash
 cd examples/rviz/nvidia
 
 xhost local:root
-docker-compose up --build
+docker-compose up
 ```
 
-#### [option 2] Intel GPU
+#### Intel GPU
 
 ```bash
 cd examples/rviz/intel
 
 xhost local:root
-docker-compose up --build
+docker-compose up
 ```
