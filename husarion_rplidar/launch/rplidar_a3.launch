@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="serial_port" default="/dev/ttyUSB0">
-  <arg name="serial_baudrate" default="256000">
-  <arg name="frame_id" default="laser">
-  <arg name="inverted" default="true">
-  <arg name="angle_compensate" default="true">
-  <arg name="scan_mode" default="Sensitivity">
+  <arg name="serial_port" default="/dev/ttyUSB0"/>
+  <arg name="serial_baudrate" default="256000"/>
+  <arg name="frame_id" default="laser"/>
+  <arg name="inverted" default="true"/>
+  <arg name="angle_compensate" default="true"/>
+  <arg name="scan_mode" default="Sensitivity"/>
 
   <node name="rplidarNode" pkg="rplidar_ros" type="rplidarNode" output="screen">
     <param name="serial_port"       type="string"     value="$(arg serial_port)"/>  
