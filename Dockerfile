@@ -2,10 +2,13 @@ from ros:melodic
 
 SHELL ["/bin/bash", "-c"]
 
-RUN mkdir -p /ros_ws/src \
-    && git clone https://github.com/Slamtec/rplidar_ros.git --branch=master /ros_ws/src/rplidar_ros
+RUN mkdir /app
+WORKDIR /app
 
-COPY ./husarion_rplidar /ros_ws/src/husarion_rplidar
+RUN mkdir -p ros_ws/src \
+    && git clone https://github.com/Slamtec/rplidar_ros.git --branch=master ros_ws/src/rplidar_ros
+
+COPY ./husarion_rplidar /app/ros_ws/src/husarion_rplidar
 
 RUN cd ros_ws \
     && source /opt/ros/melodic/setup.bash \
