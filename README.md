@@ -7,7 +7,7 @@ Dockerized rplidar_ros package from [Slamtec/rplidar_ros](https://github.com/Sla
 docker run --rm -it \
     --device /dev/ttyUSB0 \
     husarion/rplidar:latest \
-    roslaunch husarion_rplidar rplidar_a3.launch
+    roslaunch rplidar_ros rplidar_a3.launch
 ```
 
 ## Examples

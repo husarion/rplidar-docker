@@ -8,9 +8,6 @@ WORKDIR /app
 RUN mkdir -p ros_ws/src \
     && git clone https://github.com/Slamtec/rplidar_ros.git --branch=master ros_ws/src/rplidar_ros
 
-# copy husarion launch files to docker
-COPY ./husarion_rplidar /app/ros_ws/src/husarion_rplidar
-
 # build packages
 RUN cd ros_ws \
     && source /opt/ros/melodic/setup.bash \
