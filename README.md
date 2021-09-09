@@ -10,6 +10,14 @@ docker run --rm -it \
     roslaunch rplidar_ros rplidar_a3.launch
 ```
 
+## ROS Node
+### Publishes
+- `/scan` *(sensor_msgs/LaserScan)*
+
+### Services
+- `/start_motor` *(std_srvs/Empty)*
+- `/stop_motor` *(std_srvs/Empty)*
+
 ## Examples
 
 ### RPLIDAR container + rviz container
