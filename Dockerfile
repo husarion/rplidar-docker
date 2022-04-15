@@ -1,24 +1,22 @@
-FROM ros:melodic-ros-base
+FROM ros:galactic-ros-base
 
+# select bash as default shell
 SHELL ["/bin/bash", "-c"]
 
-WORKDIR /app
+WORKDIR /ros2_ws
 
-# create ROS workspace and clone rplidar node repository
-RUN mkdir -p ros_ws/src \
-    && git clone https://github.com/Slamtec/rplidar_ros.git --branch=master ros_ws/src/rplidar_ros
-
-# build packages
-RUN cd ros_ws \
-    && source /opt/ros/melodic/setup.bash \
-    && catkin_make -DCATKIN_ENABLE_TESTING=0 -DCMAKE_BUILD_TYPE=Release
-
-# clear ubuntu packages
-RUN apt clean && \
+# install everything needed
+RUN apt-get update && apt-get install -y \
+        ros-$ROS_DISTRO-rmw-fastrtps-cpp && \
+    apt-get upgrade -y && \
+    git clone https://github.com/Slamtec/rplidar_ros.git --branch=ros2 /ros2_ws/src/rplidar_ros && \
+    source /opt/ros/$ROS_DISTRO/setup.bash && \
+    colcon build --symlink-install && \
+    # make the image smaller     
+    apt-get autoremove -y && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# setup entrypoint
-COPY ./ros_entrypoint.sh /
+ENV RMW_IMPLEMENTATION=rmw_fastrtps_cpp
 
-ENTRYPOINT ["/ros_entrypoint.sh"]
-CMD ["bash"]
+COPY ros_entrypoint.sh /
