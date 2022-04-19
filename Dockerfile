@@ -1,7 +1,4 @@
-FROM husarion/ros:galactic-ros-base
-
-# select bash as default shell
-SHELL ["/bin/bash", "-c"]
+FROM ros:galactic-ros-base AS package_builder
 
 WORKDIR /ros2_ws
 
@@ -15,6 +12,13 @@ RUN apt-get update && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+FROM husarion/ros:galactic-ros-core
+
+# select bash as default shell
+SHELL ["/bin/bash", "-c"]
+
+COPY --from=package_builder /ros2_ws /ros2_ws
 
 ENV RMW_IMPLEMENTATION=rmw_fastrtps_cpp
 
