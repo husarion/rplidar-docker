@@ -10,7 +10,7 @@ ENV RMW_IMPLEMENTATION=rmw_fastrtps_cpp
 # install everything needed
 RUN apt-get update && apt-get install -y \
         ros-$ROS_DISTRO-rmw-fastrtps-cpp && \
-    apt-get remove -y ros-$ROS_DISTRO-rmw-cyclonedds-cpp && \
+    # apt-get remove -y ros-$ROS_DISTRO-rmw-cyclonedds-cpp && \
     apt-get autoremove -y && \
     git clone https://github.com/Slamtec/rplidar_ros.git --branch=ros2 /ros2_ws/src/rplidar_ros && \
     rosdep update --rosdistro $ROS_DISTRO && \
