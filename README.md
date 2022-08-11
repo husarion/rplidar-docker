@@ -1,5 +1,5 @@
 # rplidar-docker
-Dockerized rplidar_ros package from [Slamtec/rplidar_ros](https://github.com/Slamtec/rplidar_ros) repository.
+Dockerized rplidar_ros2 package from [fork of Slamtec/rplidar_ros](https://github.com/babakhani/rplidar_ros2) repository.
 
 ## Running a Docker container
 
