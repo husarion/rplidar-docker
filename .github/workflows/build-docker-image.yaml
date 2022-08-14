@@ -1,15 +1,22 @@
 name: Build/Publish Docker Image 
 
-on:
-  push:
-    branches:
-      - 'humble'
+on: push
+  # push:
+  #   branches:
+  #     - 'ros2'
   
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        ros-distro: [foxy, galactic, humble]
 
     steps:
+    - name: Display branch name
+      run: Current branch name is ${GITHUB_REF##*/}
+
     - name: Checkout
       uses: actions/checkout@v1
 
@@ -34,7 +41,8 @@ jobs:
         context: .
         file: ./Dockerfile
         platforms: linux/arm64, linux/amd64
+        build-args: ROS_DISTRO=${{ matrix.ros-distro }}
         push: true
-        tags: husarion/rplidar:humble
-        cache-from: type=registry,ref=husarion/rplidar:humble
+        tags: husarion/rplidar:${{ matrix.ros-distro }}-${GITHUB_REF##*/}
+        cache-from: type=registry,ref=husarion/rplidar:${{ matrix.ros-distro }}-${GITHUB_REF##*/}
         cache-to: type=inline
