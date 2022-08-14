@@ -15,7 +15,7 @@ jobs:
 
     steps:
     - name: Display branch name
-      run: Current branch name is ${GITHUB_REF##*/}
+      run: echo ${GITHUB_REF##*/}
 
     - name: Checkout
       uses: actions/checkout@v1
