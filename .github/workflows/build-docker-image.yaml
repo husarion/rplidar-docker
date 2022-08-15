@@ -43,6 +43,6 @@ jobs:
         platforms: linux/arm64, linux/amd64
         build-args: ROS_DISTRO=${{ matrix.ros-distro }}
         push: true
-        tags: husarion/rplidar:${{ matrix.ros-distro }}-${GITHUB_REF##*/}
-        cache-from: type=registry,ref=husarion/rplidar:${{ matrix.ros-distro }}-${GITHUB_REF##*/}
+        tags: husarion/rplidar:${{ matrix.ros-distro }}-${{ github.ref.name }}
+        cache-from: type=registry,ref=husarion/rplidar:${{ matrix.ros-distro }}-${{ github.ref.name }}
         cache-to: type=inline
