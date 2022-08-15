@@ -18,7 +18,7 @@ jobs:
       run: echo ${GITHUB_REF##*/}
 
     - name: Display branch name 2
-      run: echo ${{ github.ref.name }}
+      run: echo ${{ github.ref }}
 
     - name: Checkout
       uses: actions/checkout@v1
