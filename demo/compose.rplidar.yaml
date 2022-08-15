@@ -1,0 +1,17 @@
+# Quick Start
+# $ docker compose -f compose.rplidar.yaml up
+
+services:
+
+  rplidar:
+    image: husarion/rplidar:humble-ros2
+    restart: unless-stopped
+    network_mode: host
+    ipc: host
+    devices:
+      - /dev/ttyUSB0
+    environment:
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}
+      - RMW_IMPLEMENTATION=${RMW_IMPLEMENTATION:-rmw_fastrtps_cpp}
+    command: ros2 launch sllidar_ros2 sllidar_launch.py 
+

@@ -22,4 +22,9 @@ RUN git clone https://github.com/DominikN/sllidar_ros2.git /ros2_ws/src/sllidar_
     source /opt/ros/$ROS_DISTRO/setup.bash && \
     colcon build --symlink-install --event-handlers console_direct+
 
+RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc
+RUN echo "source /ros2_ws/install/setup.bash" >> ~/.bashrc
+
+ENV RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+
 COPY ros_entrypoint.sh /
