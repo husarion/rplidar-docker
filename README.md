@@ -1,43 +1,39 @@
 # rplidar-docker
-Dockerized rplidar_ros2 package from [fork of Slamtec/rplidar_ros](https://github.com/babakhani/rplidar_ros2) repository.
+
+Dockerized rplidar_ros2 package from [fork of Slamtec/sllidar_ros2](https://github.com/Slamtec/sllidar_ros2) repository.
 
 ## Running a Docker container
 
 ```bash
 docker run --rm -it \
     --device /dev/ttyUSB0 \
-    husarion/rplidar:latest \
-    roslaunch rplidar_ros rplidar_a3.launch
+    husarion/rplidar:humble \
+   ros2 launch sllidar_ros2 sllidar_launch.py 
 ```
 
 ## ROS Node
+
 ### Publishes
 - `/scan` *(sensor_msgs/LaserScan)*
 
-### Services
-- `/start_motor` *(std_srvs/Empty)*
-- `/stop_motor` *(std_srvs/Empty)*
-
-## Examples
+## Demo
 
 ### RPLIDAR container + rviz container
 
-Connect RPLidar to your laptop and depending you have NVIDIA GPU or not, choose the right example:
-
-#### NVIDIA GPU
+Connect RPLIDAR to the first computer and run:
 
 ```bash
-cd examples/rviz/nvidia
-
-xhost local:root
-docker-compose up
+cd demo
+docker compose -f compose.rplidar.yaml up
 ```
 
-#### Intel GPU
+On the second computer (or the first one) with connected display run:
 
 ```bash
-cd examples/rviz/intel
-
+cd demo
 xhost local:root
-docker-compose up
+docker compose -f compose.rviz.yaml up
 ```
+
+
+
