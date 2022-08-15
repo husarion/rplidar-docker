@@ -28,3 +28,6 @@ RUN echo "source /ros2_ws/install/setup.bash" >> ~/.bashrc
 ENV RMW_IMPLEMENTATION=rmw_fastrtps_cpp
 
 COPY ros_entrypoint.sh /
+
+# Without this line LIDAR doesn't stop spinning on container shutdown. Default is SIGTERM. 
+STOPSIGNAL SIGINT
