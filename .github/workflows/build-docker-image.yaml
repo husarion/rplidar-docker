@@ -20,9 +20,14 @@ jobs:
     - name: Display branch name 2
       run: echo ${{ github.ref }}
 
+    - name: Display branch name 4
+      run: echo ${{ github.head_ref }} 
 
-    - name: Display branch name 3
-      run: echo ${{ github.base_ref }}
+    - name: Display branch name 5
+      run: echo ${{ github.ref_name }} 
+
+    - name: Display branch name 6
+      run: echo ${{ github.head_ref || github.ref_name }} 
 
     - name: Checkout
       uses: actions/checkout@v1
