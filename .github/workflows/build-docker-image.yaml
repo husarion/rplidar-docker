@@ -14,21 +14,6 @@ jobs:
         ros-distro: [foxy, galactic, humble]
 
     steps:
-    - name: Display branch name
-      run: echo ${GITHUB_REF##*/}
-
-    - name: Display branch name 2
-      run: echo ${{ github.ref }}
-
-    - name: Display branch name 4
-      run: echo ${{ github.head_ref }} 
-
-    - name: Display branch name 5
-      run: echo ${{ github.ref_name }} 
-
-    - name: Display branch name 6
-      run: echo ${{ github.head_ref || github.ref_name }} 
-
     - name: Checkout
       uses: actions/checkout@v1
 
@@ -65,6 +50,6 @@ jobs:
         platforms: linux/arm64, linux/amd64
         build-args: ROS_DISTRO=${{ matrix.ros-distro }}
         push: true
-        tags: husarion/rplidar:${{ matrix.ros-distro }}-${{ github.ref.name }}
-        cache-from: type=registry,ref=husarion/rplidar:${{ matrix.ros-distro }}-${{ github.ref.name }}
+        tags: husarion/rplidar:${{ matrix.ros-distro }}-${{ github.head_ref || github.ref_name }} 
+        cache-from: type=registry,ref=husarion/rplidar:${{ matrix.ros-distro }}-${{ github.head_ref || github.ref_name }} 
         cache-to: type=inline
