@@ -36,4 +36,20 @@ docker compose -f compose.rviz.yaml up
 ```
 
 
+## Note
 
+`ros2` branch was replaced by branches `humble` and `galactic`. Here's a quick cheat sheet how it was done:
+
+```bash
+# tag the branch
+git tag archive/humble humble
+
+# delete the branch locally
+git branch -D humble
+
+# delete the branch on GitHub
+git push origin :humble
+
+# push "archive/humble" tag on GitHub
+git push --tags
+```
