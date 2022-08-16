@@ -33,7 +33,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
           
     - name: Build and push
-      if: github.ref.name == 'main'
+      if: github.ref.name == 'ros2'
       uses: docker/build-push-action@v2
       with:
         platforms: linux/arm64, linux/amd64
@@ -44,7 +44,7 @@ jobs:
         cache-to: type=inline
 
     - name: Build and push
-      if: github.ref.name != 'main'
+      if: github.ref.name != 'ros2'
       uses: docker/build-push-action@v2
       with:
         platforms: linux/arm64, linux/amd64
