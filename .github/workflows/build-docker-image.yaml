@@ -33,10 +33,10 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Print branch name
-      run: echo ${{ github.ref.name }}
+      run: echo ${{ github.ref_name}}
 
     - name: Build and push (production)
-      if: github.ref.name == 'ros2'
+      if: github.ref_name == 'ros2'
       uses: docker/build-push-action@v2
       with:
         platforms: linux/arm64, linux/amd64
@@ -47,7 +47,7 @@ jobs:
         cache-to: type=inline
 
     - name: Build and push (testing)
-      if: github.ref.name != 'ros2'
+      if: github.ref_name != 'ros2'
       uses: docker/build-push-action@v2
       with:
         platforms: linux/arm64, linux/amd64
