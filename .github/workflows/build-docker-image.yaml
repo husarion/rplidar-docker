@@ -35,6 +35,6 @@ jobs:
         file: ./Dockerfile
         platforms: linux/arm64, linux/amd64
         push: true
-        tags: husarion/rplidar:humble
-        cache-from: type=registry,ref=husarion/rplidar:humble
+        tags: husarion/rplidar:humble-deprecated
+        cache-from: type=registry,ref=husarion/rplidar:humble-deprecated
         cache-to: type=inline
