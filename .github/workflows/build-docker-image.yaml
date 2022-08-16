@@ -35,6 +35,6 @@ jobs:
         file: ./Dockerfile
         platforms: linux/arm64, linux/amd64
         push: true
-        tags: husarion/rplidar:galactic
-        cache-from: type=registry,ref=husarion/rplidar:galactic
+        tags: husarion/rplidar:galactic-deprecated
+        cache-from: type=registry,ref=husarion/rplidar:galactic-deprecated
         cache-to: type=inline
