@@ -4,7 +4,7 @@
 services:
 
   rplidar:
-    image: husarion/rplidar:humble-ros2
+    image: husarion/rplidar:humble
     restart: unless-stopped
     network_mode: host
     ipc: host

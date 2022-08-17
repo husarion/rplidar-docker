@@ -1,6 +1,6 @@
 # rplidar-docker
 
-Dockerized rplidar_ros2 package from [fork of Slamtec/sllidar_ros2](https://github.com/Slamtec/sllidar_ros2) repository.
+Dockerized rplidar ROS 2 package from [fork of Slamtec/sllidar_ros2](https://github.com/Slamtec/sllidar_ros2) repository.
 
 ## Running a Docker container
 
@@ -35,10 +35,9 @@ xhost local:root
 docker compose -f compose.rviz.yaml up
 ```
 
-
 ## Note
 
-`ros2` branch was replaced by branches `humble` and `galactic`. Here's a quick cheat sheet how it was done:
+`humble` and `galactic` branches were replaced by `ros2` branch. Here's a quick cheat sheet how it was done:
 
 ```bash
 # tag the branch
