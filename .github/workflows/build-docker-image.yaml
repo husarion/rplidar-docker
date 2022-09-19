@@ -1,6 +1,8 @@
 name: Build/Publish Docker Image 
 
-on: push
+on: 
+  push:
+  workflow_dispatch:
   # push:
   #   branches:
   #     - 'ros2'
