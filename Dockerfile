@@ -9,7 +9,7 @@ SHELL ["/bin/bash", "-c"]
 WORKDIR /ros2_ws
 
 # install everything needed
-RUN git clone https://github.com/DominikN/sllidar_ros2.git /ros2_ws/src/sllidar_ros2 -b main && \
+RUN git clone https://github.com/husarion/sllidar_ros2.git /ros2_ws/src/sllidar_ros2 -b main && \
     cd src/sllidar_ros2 && \
     git checkout d1f728732ce7a980e1d241efcbde9c93b418e73c && \
     cd ../.. && \
