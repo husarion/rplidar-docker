@@ -3,11 +3,15 @@ name: Build/Publish Docker Image
 on:
   push:
     branches:
-      - 'melodic'
+      - 'ros1'
   
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        ros-distro: [kinetic, melodic, noetic]
 
     steps:
     - name: Checkout
@@ -34,7 +38,8 @@ jobs:
         context: .
         file: ./Dockerfile
         platforms: linux/arm64, linux/amd64, linux/arm/v7
+        build-args: ROS_DISTRO=${{ matrix.ros-distro }}
         push: true
-        tags: husarion/rplidar:melodic
-        cache-from: type=registry,ref=husarion/rplidar:melodic
+        tags: husarion/rplidar:${{ matrix.ros-distro }}
+        cache-from: type=registry,ref=husarion/rplidar:${{ matrix.ros-distro }}
         cache-to: type=inline
