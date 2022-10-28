@@ -9,10 +9,7 @@ SHELL ["/bin/bash", "-c"]
 WORKDIR /ros2_ws
 
 # install everything needed
-RUN git clone https://github.com/DominikN/sllidar_ros2.git /ros2_ws/src/sllidar_ros2 -b main && \
-    cd src/sllidar_ros2 && \
-    git checkout d1f728732ce7a980e1d241efcbde9c93b418e73c && \
-    cd ../.. && \
+RUN git clone https://github.com/husarion/sllidar_ros2.git /ros2_ws/src/sllidar_ros2 -b main && \
     rosdep update --rosdistro $ROS_DISTRO && \
     rosdep install --from-paths src --ignore-src -y && \
     source /opt/ros/$ROS_DISTRO/setup.bash && \
