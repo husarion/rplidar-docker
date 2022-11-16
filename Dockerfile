@@ -1,4 +1,3 @@
-
 ARG ROS_DISTRO=galactic
 
 FROM ros:$ROS_DISTRO-ros-base AS pkg-builder
