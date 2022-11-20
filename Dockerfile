@@ -19,8 +19,6 @@ FROM husarnet/ros:$ROS_DISTRO-ros-core
 # select bash as default shell
 SHELL ["/bin/bash", "-c"]
 
-WORKDIR /ros2_ws
-
 COPY --from=pkg-builder /ros2_ws /ros2_ws
 
 RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc
