@@ -24,5 +24,7 @@ COPY --from=pkg-builder /ros2_ws /ros2_ws
 RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc
 RUN echo "source /ros2_ws/install/setup.bash" >> ~/.bashrc
 
+RUN echo $(cat /ros2_ws/src/sllidar_ros2/package.xml | grep '<version>' | sed -r 's/.*<version>([0-9]+.[0-9]+.[0-9]+)<\/version>/\1/g') > /version.txt
+
 # Without this line LIDAR doesn't stop spinning on container shutdown. Default is SIGTERM. 
 STOPSIGNAL SIGINT
