@@ -18,6 +18,7 @@ RUN git clone https://github.com/husarion/sllidar_ros2.git /ros2_ws/src/sllidar_
 FROM husarnet/ros:${PREFIX}${ROS_DISTRO}-ros-core
 
 ARG PREFIX
+ENV PREFIX_ENV=$PREFIX
 
 # select bash as default shell
 SHELL ["/bin/bash", "-c"]
@@ -28,7 +29,7 @@ COPY healthcheck.py /
 RUN echo $(cat /ros2_ws/src/sllidar_ros2/package.xml | grep '<version>' | sed -r 's/.*<version>([0-9]+.[0-9]+.[0-9]+)<\/version>/\1/g') > /version.txt
 
 HEALTHCHECK --interval=10s --timeout=10s --start-period=5s --retries=6  \
-    CMD bash -c "MYDISTRO=${PREFIX:-ros}; MYDISTRO=${MYDISTRO//-/} && source /opt/$MYDISTRO/$ROS_DISTRO/setup.bash && /healthcheck.py"
+    CMD bash -c "MYDISTRO=${PREFIX_ENV:-ros}; MYDISTRO=${MYDISTRO//-/} && source /opt/$MYDISTRO/$ROS_DISTRO/setup.bash && /healthcheck.py"
 
 # Without this line LIDAR doesn't stop spinning on container shutdown. Default is SIGTERM. 
 STOPSIGNAL SIGINT
