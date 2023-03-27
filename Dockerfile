@@ -25,11 +25,12 @@ SHELL ["/bin/bash", "-c"]
 
 COPY --from=pkg-builder /ros2_ws /ros2_ws
 COPY healthcheck.py /
+COPY run_healthcheck.sh /
 
 RUN echo $(cat /ros2_ws/src/sllidar_ros2/package.xml | grep '<version>' | sed -r 's/.*<version>([0-9]+.[0-9]+.[0-9]+)<\/version>/\1/g') > /version.txt
 
 HEALTHCHECK --interval=10s --timeout=10s --start-period=5s --retries=6  \
-    CMD bash -c "MYDISTRO=${PREFIX_ENV:-ros}; MYDISTRO=${MYDISTRO//-/} && source /opt/$MYDISTRO/$ROS_DISTRO/setup.bash && /healthcheck.py"
+    CMD /run_healthcheck.sh
 
 # Without this line LIDAR doesn't stop spinning on container shutdown. Default is SIGTERM. 
 STOPSIGNAL SIGINT
