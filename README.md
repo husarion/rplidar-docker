@@ -5,10 +5,27 @@ Dockerized rplidar ROS 2 package from [fork of Slamtec/sllidar_ros2](https://git
 ## Running a Docker container
 
 ```bash
-docker run --rm -it \
-    --device /dev/ttyUSB0 \
+# check /dev/ttyUSBX port for RPLIDAR
+LIDAR_SERIAL=/dev/ttyUSB1
+
+# for RPLIDAR A2M8 (red circle around the sensor):
+# LIDAR_BAUDRATE=115200
+# for RPLIDAR A2M12 and A3 (violet circle around the sensor):
+LIDAR_BAUDRATE=256000
+
+docker run --rm -d \
+    --device ${LIDAR_SERIAL}:/dev/ttyUSB0 \
     husarion/rplidar:humble \
-   ros2 launch sllidar_ros2 sllidar_launch.py 
+    ros2 launch sllidar_ros2 sllidar_launch.py serial_baudrate:=${LIDAR_BAUDRATE}
+```
+
+there is a new `/scan` topic available:
+
+```bash
+husarion@rosbotxl:~$ ros2 topic list
+/parameter_events
+/rosout
+/scan
 ```
 
 ## ROS Node
