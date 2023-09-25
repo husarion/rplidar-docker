@@ -1,0 +1,27 @@
+# Quick Start
+# $ xhost +local:docker
+# $ docker compose up
+
+services:
+
+  rplidar:
+    # image: husarion/rplidar:humble
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    devices:
+      - /dev/ttyUSB0
+    # command: sleep 3600
+    command: ros2 launch sllidar_ros2 sllidar_s3_launch.py
+    # command: >
+    #   ros2 launch sllidar_ros2 sllidar_launch.py 
+    #     serial_baudrate:=${RPLIDAR_BAUDRATE:-256000}
+
+  rviz:
+    image: husarion/rviz2:humble
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ./default.rviz:/root/.rviz2/default.rviz
+    environment:
+      - DISPLAY=${DISPLAY:?err}
+      - LIBGL_ALWAYS_SOFTWARE=1
