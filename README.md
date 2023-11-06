@@ -7,22 +7,22 @@ The repository includes a GitHub Actions workflow that automatically deploys bui
 [![ROS Docker Image](https://github.com/husarion/rplidar-docker/actions/workflows/ros-docker-image.yaml/badge.svg)](https://github.com/husarion/rplidar-docker/actions/workflows//ros-docker-image.yaml)
 
 
-## Prepare environment
+## Prepare Environment
 
-**1. Plugin the device**
+**1. Plugin the Device**
 
 You can use `lsusb` command to check if the device is visible.
 
 ## Demo
 
-**1. Clone repository.**
+**1. Clone the Repository**
 
 ```bash
 git clone https://github.com/husarion/rplidar-docker.git
 cd rplidar-docker/demo
 ```
 
-**2. Specify configuration**
+**2. Specify Configuration**
 
 ```bash
 # Select LIDAR baudrate:
@@ -31,14 +31,13 @@ cd rplidar-docker/demo
 LIDAR_BAUDRATE=256000
 ```
 
-
-**3. Turn on device**
+**3. Activate the Device**
 
 ```bash
 docker compose up rplidar
 ```
 
-**4. Run vizualization**
+**4. Launch Visualization**
 
 ```bash
 xhost local:root
