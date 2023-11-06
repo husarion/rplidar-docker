@@ -1,71 +1,49 @@
-# rplidar-docker
+<h1 align="center">
+  Docker Images for RPlidar
+</h1>
 
-Dockerized rplidar ROS 2 package from [fork of Slamtec/sllidar_ros2](https://github.com/Slamtec/sllidar_ros2) repository.
+The repository includes a GitHub Actions workflow that automatically deploys built Docker images to the [husarion/rplidar-docker](https://hub.docker.com/r/husarion/rplidar) Docker Hub repositories. This process is based on a fork of the [fork of Slamtec/sllidar_ros2](https://github.com/Slamtec/sllidar_ros2)repository.
 
-## Running a Docker container
+[![ROS Docker Image](https://github.com/husarion/rplidar-docker/actions/workflows/ros-docker-image.yaml/badge.svg)](https://github.com/husarion/rplidar-docker/actions/workflows//ros-docker-image.yaml)
 
-```bash
-# check /dev/ttyUSBX port for RPLIDAR
-LIDAR_SERIAL=/dev/ttyUSB1
 
-# for RPLIDAR A2M8 (red circle around the sensor):
-# LIDAR_BAUDRATE=115200
-# for RPLIDAR A2M12 and A3 (violet circle around the sensor):
-LIDAR_BAUDRATE=256000
+## Prepare environment
 
-docker run --rm -d \
-    --device ${LIDAR_SERIAL}:/dev/ttyUSB0 \
-    husarion/rplidar:humble \
-    ros2 launch sllidar_ros2 sllidar_launch.py serial_baudrate:=${LIDAR_BAUDRATE}
-```
+**1. Plugin the device**
 
-there is a new `/scan` topic available:
-
-```bash
-husarion@rosbotxl:~$ ros2 topic list
-/parameter_events
-/rosout
-/scan
-```
-
-## ROS Node
-
-### Publishes
-- `/scan` *(sensor_msgs/LaserScan)*
+You can use `lsusb` command to check if the device is visible.
 
 ## Demo
 
-### RPLIDAR container + rviz container
-
-Connect RPLIDAR to the first computer and run:
+**1. Clone repository.**
 
 ```bash
-cd demo
-docker compose -f compose.rplidar.yaml up
+git clone https://github.com/husarion/rplidar-docker.git
+cd rplidar-docker/demo
 ```
 
-On the second computer (or the first one) with connected display run:
+**2. Specify configuration**
 
 ```bash
-cd demo
+# Select LIDAR baudrate:
+# - 115200 - for RPLIDAR A2M8 (red circle around the sensor)
+# - 256000 - for RPLIDAR A2M12 and A3 (violet circle around the sensor)
+LIDAR_BAUDRATE=256000
+```
+
+
+**3. Turn on device**
+
+```bash
+docker compose up rplidar
+```
+
+**4. Run vizualization**
+
+```bash
 xhost local:root
-docker compose -f compose.rviz.yaml up
+docker compose up rviz
 ```
 
-## Note
-
-`humble` and `galactic` branches were replaced by `ros2` branch. Here's a quick cheat sheet how it was done:
-
-```bash
-# tag the branch
-git tag archive/humble humble
-
-# delete the branch locally
-git branch -D humble
-
-# delete the branch on GitHub
-git push origin :humble
-
-# push "archive/humble" tag on GitHub
-git push --tags
-```
+> [!NOTE]
+> You can run the visualization on any device, provided that it is connected to the computer to which the sensor is connected.
