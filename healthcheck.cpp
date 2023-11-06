@@ -1,29 +1,36 @@
 #include "rclcpp/rclcpp.hpp"
+#include "sensor_msgs/msg/laser_scan.hpp"
 #include "cstdlib"
 
-bool checkROS2TopicExistence(const std::string& topic_name) {
-    rclcpp::init(0, nullptr);
+using namespace std::chrono_literals;
 
-    auto node = std::make_shared<rclcpp::Node>("health_check_node");
+#define TOPIC_NAME "/scan"
+#define TIMEOUT 2s
 
-    // Create a client to check if the topic is available
-    auto topic_exists = node->get_topic_names_and_types();
+int msg_received = EXIT_FAILURE;
 
-    for (const auto& topic : topic_exists) {
-        if (topic.first == topic_name) {
-            return true;
-        }
-    }
-
-    return false;
+void msg_callback(const sensor_msgs::msg::LaserScan::SharedPtr msg)
+{
+    std::cout << "Message received" << std::endl;
+    msg_received = EXIT_SUCCESS;
+    rclcpp::shutdown();
 }
 
-int main() {
-    std::string topic_name = "/scan";
+void timeout_callback()
+{
+  std::cout << "Timeout" << std::endl;
+  rclcpp::shutdown();
+}
 
-    if (checkROS2TopicExistence(topic_name)) {
-        return EXIT_SUCCESS;
-    } else {
-        return EXIT_FAILURE;
-    }
+int main(int argc, char* argv[])
+{
+  rclcpp::init(argc, argv);
+  auto node = rclcpp::Node::make_shared("listener_scan");
+  auto sub = node->create_subscription<sensor_msgs::msg::LaserScan>(TOPIC_NAME, 10, msg_callback);
+
+  // Set a timer for the timeout duration (e.g., 5 seconds)
+  auto timer = node->create_wall_timer(TIMEOUT, timeout_callback);
+
+  rclcpp::spin(node);
+  return msg_received;
 }

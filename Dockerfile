@@ -18,8 +18,9 @@ RUN cd src/ && \
     source /opt/ros/$ROS_DISTRO/setup.bash && \
     ros2 pkg create healthcheck_pkg --build-type ament_cmake --dependencies rclcpp std_msgs && \
     sed -i '/find_package(std_msgs REQUIRED)/a \
+            find_package(sensor_msgs REQUIRED)\n \
             add_executable(healthcheck_node src/healthcheck.cpp)\n \
-            ament_target_dependencies(healthcheck_node rclcpp std_msgs)\n \
+            ament_target_dependencies(healthcheck_node rclcpp std_msgs sensor_msgs)\n \
             install(TARGETS healthcheck_node DESTINATION lib/${PROJECT_NAME})' \
             /ros2_ws/src/healthcheck_pkg/CMakeLists.txt
 
