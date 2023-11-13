@@ -42,11 +42,8 @@ COPY --from=pkg-builder /ros2_ws/install /ros2_ws/install
 
 RUN echo $(cat /ros2_ws/src/sllidar_ros2/package.xml | grep '<version>' | sed -r 's/.*<version>([0-9]+.[0-9]+.[0-9]+)<\/version>/\1/g') > /version.txt
 
-HEALTHCHECK --interval=10s --timeout=5s --start-period=5s --retries=5 \
+HEALTHCHECK --interval=15s --timeout=10s --start-period=5s --retries=5 \
     CMD ["/ros_entrypoint.sh", "ros2", "run", "healthcheck_pkg", "healthcheck_node"]
-
-COPY ./ros_entrypoint.sh /ros_entrypoint.sh
-ENTRYPOINT ["/ros_entrypoint.sh"]
 
 # Ensure LIDAR stops spinning on container shutdown
 STOPSIGNAL SIGINT
