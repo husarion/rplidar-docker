@@ -42,7 +42,9 @@ COPY --from=pkg-builder /ros2_ws/install /ros2_ws/install
 
 RUN echo $(cat /ros2_ws/src/sllidar_ros2/package.xml | grep '<version>' | sed -r 's/.*<version>([0-9]+.[0-9]+.[0-9]+)<\/version>/\1/g') > /version.txt
 
-COPY ./ros_entrypoint.sh /
+RUN sed -i '/test -f "\/ros2_ws\/install\/setup.bash" && source "\/ros2_ws\/install\/setup.bash"/a \
+        ros2 run healthcheck_pkg healthcheck_node &' \
+        /ros_entrypoint.sh
 
 COPY ./healthcheck.sh /
 HEALTHCHECK --interval=7s --timeout=2s  --start-period=5s --retries=5 \
