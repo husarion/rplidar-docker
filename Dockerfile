@@ -27,7 +27,7 @@ COPY ./healthcheck.cpp /ros2_ws/src/healthcheck_pkg/src/
 
 # Build
 RUN source /opt/ros/$ROS_DISTRO/setup.bash && \
-    colcon build --event-handlers console_direct+
+    colcon build
 
 # Second stage - Deploy the built packages
 FROM husarnet/ros:${PREFIX}${ROS_DISTRO}-ros-core
