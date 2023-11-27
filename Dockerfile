@@ -37,7 +37,7 @@ ENV PREFIX_ENV=$PREFIX
 
 SHELL ["/bin/bash", "-c"]
 
-COPY --from=pkg-builder /ros2_ws/install /ros2_ws/install
+COPY --from=pkg-builder /ros2_ws /ros2_ws
 
 RUN echo $(cat /ros2_ws/src/sllidar_ros2/package.xml | grep '<version>' | sed -r 's/.*<version>([0-9]+.[0-9]+.[0-9]+)<\/version>/\1/g') > /version.txt
 
