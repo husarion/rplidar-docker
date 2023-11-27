@@ -22,14 +22,22 @@ git clone https://github.com/husarion/rplidar-docker.git
 cd rplidar-docker/demo
 ```
 
-**2. Specify Configuration**
+**2. Select the Appropriate Baudrate**
 
 ```bash
-# Select LIDAR baudrate:
-# - 115200 - for RPLIDAR A2M8 (red circle around the sensor)
-# - 256000 - for RPLIDAR A2M12 and A3 (violet circle around the sensor)
-LIDAR_BAUDRATE=256000
+export RPLIDAR_BAUDRATE=<baudrate>
 ```
+
+Replace `<baudrate>` with appropriate baudrate for your LiDAR from below table.
+
+| **Product Name** | **Baudrate**  |
+| ---------------- | ------------- |
+| RPlidar A2M8     | **`115200`**  |
+| RPlidar A2M12    | **`256000`**  |
+| RPlidar A3       | **`256000`**  |
+| RPlidar S1       | **`256000`**  |
+| RPlidar S2       | **`1000000`** |
+| RPlidar S3       | **`1000000`** |
 
 **3. Activate the Device**
 
