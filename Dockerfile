@@ -27,7 +27,8 @@ COPY ./healthcheck.cpp /ros2_ws/src/healthcheck_pkg/src/
 
 # Build
 RUN source /opt/ros/$ROS_DISTRO/setup.bash && \
-    colcon build
+    colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release && \
+    rm -rf build log
 
 # Second stage - Deploy the built packages
 FROM husarnet/ros:${PREFIX}${ROS_DISTRO}-ros-core
@@ -41,6 +42,7 @@ COPY --from=pkg-builder /ros2_ws /ros2_ws
 
 RUN echo $(cat /ros2_ws/src/sllidar_ros2/package.xml | grep '<version>' | sed -r 's/.*<version>([0-9]+.[0-9]+.[0-9]+)<\/version>/\1/g') > /version.txt
 
+# Run healthcheck in background
 RUN if [ -f "/ros_entrypoint.sh" ]; then \
         sed -i '/test -f "\/ros2_ws\/install\/setup.bash" && source "\/ros2_ws\/install\/setup.bash"/a \
         ros2 run healthcheck_pkg healthcheck_node &' \
@@ -52,7 +54,7 @@ RUN if [ -f "/ros_entrypoint.sh" ]; then \
     fi
 
 COPY ./healthcheck.sh /
-HEALTHCHECK --interval=7s --timeout=2s  --start-period=5s --retries=5 \
+HEALTHCHECK --interval=5s --timeout=2s  --start-period=5s --retries=4 \
     CMD ["/healthcheck.sh"]
 
 # Ensure LIDAR stops spinning on container shutdown
