@@ -32,7 +32,7 @@ repos:
             files: ^.github|./\.yaml
 
     - repo: https://github.com/psf/black
-      rev: 23.11.0
+      rev: 23.12.0
       hooks:
         - id: black
           args: ["--line-length=99"]
@@ -53,6 +53,6 @@ repos:
           exclude: ^.*\/CHANGELOG\.rst/.*$
 
     - repo: https://github.com/pre-commit/mirrors-clang-format
-      rev: v17.0.4
+      rev: v17.0.6
       hooks:
         -   id: clang-format
