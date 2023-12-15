@@ -33,7 +33,7 @@ void healthy_check() {
 
 int main(int argc, char *argv[]) {
   rclcpp::init(argc, argv);
-  auto node = rclcpp::Node::make_shared("healthcheck_node");
+  auto node = rclcpp::Node::make_shared("healthcheck_rplidar");
   auto sub = node->create_subscription<sensor_msgs::msg::LaserScan>(
       "scan", rclcpp::SensorDataQoS().keep_last(1), msg_callback);
 

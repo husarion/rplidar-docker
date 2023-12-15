@@ -43,15 +43,10 @@ COPY --from=pkg-builder /ros2_ws /ros2_ws
 RUN echo $(cat /ros2_ws/src/sllidar_ros2/package.xml | grep '<version>' | sed -r 's/.*<version>([0-9]+.[0-9]+.[0-9]+)<\/version>/\1/g') > /version.txt
 
 # Run healthcheck in background
-RUN if [ -f "/ros_entrypoint.sh" ]; then \
-        sed -i '/test -f "\/ros2_ws\/install\/setup.bash" && source "\/ros2_ws\/install\/setup.bash"/a \
-        ros2 run healthcheck_pkg healthcheck_node &' \
-        /ros_entrypoint.sh; \
-    else \
-        sed -i '/test -f "\/ros2_ws\/install\/setup.bash" && source "\/ros2_ws\/install\/setup.bash"/a \
-        ros2 run healthcheck_pkg healthcheck_node &' \
-        /vulcanexus_entrypoint.sh; \
-    fi
+RUN entrypoint_file=$(if [ -f "/ros_entrypoint.sh" ]; then echo "/ros_entrypoint.sh"; else echo "/vulcanexus_entrypoint.sh"; fi) && \
+    sed -i '/test -f "\/ros2_ws\/install\/setup.bash" && source "\/ros2_ws\/install\/setup.bash"/a \
+            ros2 run healthcheck_pkg healthcheck_node &' \
+            $entrypoint_file
 
 COPY ./healthcheck.sh /
 HEALTHCHECK --interval=2s --timeout=1s --start-period=20s --retries=1 \
