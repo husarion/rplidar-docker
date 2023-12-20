@@ -8,8 +8,10 @@ SHELL ["/bin/bash", "-c"]
 
 WORKDIR /ros2_ws
 
-# Clone and install dependencies
-RUN git clone https://github.com/husarion/sllidar_ros2.git /ros2_ws/src/sllidar_ros2 && \
+# install everything needed
+RUN git clone https://github.com/Slamtec/sllidar_ros2.git /ros2_ws/src/sllidar_ros2 && \
+    cp /ros2_ws/src/sllidar_ros2/launch/sllidar_a1_launch.py \
+       /ros2_ws/src/sllidar_ros2/launch/sllidar_launch.py && \
     rosdep update --rosdistro $ROS_DISTRO && \
     rosdep install --from-paths src --ignore-src -y
 
