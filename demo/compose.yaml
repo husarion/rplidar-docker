@@ -6,17 +6,16 @@ x-common-config:
 
 services:
   rplidar:
-    # image: husarion/rplidar:humble
-    build:
-      context: ..
-      dockerfile: Dockerfile
+    image: husarion/rplidar:humble
+    # build:
+    #   context: ..
+    #   dockerfile: Dockerfile
     <<: *common-config
     devices:
       - /dev/ttyUSB0
     command: >
-      ros2 launch sllidar_ros2 sllidar_launch.py
+      ros2 launch /husarion_utils/rplidar.launch.py
         serial_baudrate:=${RPLIDAR_BAUDRATE:-115200}
-        device_namespace:=lidar
 
   rviz:
     image: husarion/rviz2:humble
@@ -30,4 +29,3 @@ services:
       - LIBGL_ALWAYS_SOFTWARE=1
     command: >
       ros2 launch rviz.launch.py
-        device_namespace:=lidar

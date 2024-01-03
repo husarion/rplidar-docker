@@ -21,7 +21,7 @@ def launch_setup(context, *args, **kwargs):
     if device_namespace:
         frame_id = device_namespace + "_link"
     else:
-        frame_id = "scan"
+        frame_id = "laser"
 
     rplidar_actions = []
 
