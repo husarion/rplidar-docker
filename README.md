@@ -51,8 +51,8 @@ You can use `lsusb` command to check if the device is visible.
    docker compose up rviz
    ```
 
-   > [!NOTE]
-   > To use the latest version of the image, run the `docker compose pull` command.
+> [!NOTE]
+> To use the latest version of the image, run the `docker compose pull` command.
 
 ## Parameters
 
