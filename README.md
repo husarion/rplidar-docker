@@ -58,7 +58,7 @@ You can use `lsusb` command to check if the device is visible.
 
 The original launch has been modified with the new parameters:
 
-| **Product Name**   | **Description**                                                                                                                             | **Default Value**      |
+| **Parameter**   | **Description**                                                                                                                             | **Default Value**      |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
 | `launch_file`      | Name of launch file from repo `sllidar_ros2` to run                                                                                         | `sllidar_launch.py`    |
 | `serial_baudrate`  | Baudrate of connected lidar (depend on your RPlidar model)                                                                                  | `115200`               |
