@@ -56,7 +56,7 @@ You can use `lsusb` command to check if the device is visible.
 
 ## Parameters
 
-The original launch has been modified with the new parameters:
+Inside the image there is a custom `/husarion_utils/astra.launch.py` that is not the part of the ROS 2 package for Astra camera. It was added for easy integration with Husarion robots. This launch file contains following parameters:
 
 | **Parameter**   | **Description**                                                                                                                             | **Default Value**      |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
@@ -70,6 +70,6 @@ Using both `device_namespace` and `robot_namespace` makes:
 
 - Topic: `/<robot_namespace>/<device_namespace>/<default_topic>`
 - Topic TF: `/<robot_namesace>/tf`
-- URDF Links: `<device_namespace>_link`
+- URDF Link: `<device_namespace>_link` (default: `laser`)
 
-If any of the namespaces are missing, the field with `/` is omitted for topics, or replaced with default ones for URDF links.
+If any of the namespaces are missing, the field with `/` is omitted for topics, or replaced with default ones for URDF link.
