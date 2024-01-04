@@ -1,32 +1,31 @@
-# Quick Start
-# docker compose up
+x-common-config:
+  &common-config
+  network_mode: host
+  ipc: host
+  env_file: .env
 
 services:
-
   rplidar:
     image: husarion/rplidar:humble
-    restart: unless-stopped
-    network_mode: host
-    ipc: host
+    # build:
+    #   context: ..
+    #   dockerfile: Dockerfile
+    <<: *common-config
     devices:
       - /dev/ttyUSB0
-    environment:
-      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}
-      - RMW_IMPLEMENTATION=${RMW_IMPLEMENTATION:-rmw_fastrtps_cpp}
     command: >
-      ros2 launch sllidar_ros2 sllidar_launch.py
-        serial_baudrate:=${RPLIDAR_BAUDRATE:-256000}
+      ros2 launch /husarion_utils/rplidar.launch.py
+        serial_baudrate:=${RPLIDAR_BAUDRATE:-115200}
 
   rviz:
     image: husarion/rviz2:humble
-    restart: on-failure
-    network_mode: host
-    ipc: host
+    <<: *common-config
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ./default.rviz:/root/.rviz2/default.rviz
+      - ./rviz.launch.py:/ros2_ws/rviz.launch.py
     environment:
       - DISPLAY=${DISPLAY:?err}
       - LIBGL_ALWAYS_SOFTWARE=1
-      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}
-      - RMW_IMPLEMENTATION=${RMW_IMPLEMENTATION:-rmw_fastrtps_cpp}
+    command: >
+      ros2 launch rviz.launch.py
