@@ -29,14 +29,11 @@ You can use `lsusb` command to check if the device is visible.
 
    Replace `<baudrate>` with appropriate baudrate for your LiDAR from below table.
 
-   | **Product Name** | **Baudrate**  |
-   | ---------------- | ------------- |
-   | RPlidar A2M8     | **`115200`**  |
-   | RPlidar A2M12    | **`256000`**  |
-   | RPlidar A3       | **`256000`**  |
-   | RPlidar S1       | **`256000`**  |
-   | RPlidar S2       | **`1000000`** |
-   | RPlidar S3       | **`1000000`** |
+   | **Product Name**        | **Baudrate**  |
+   | ----------------------- | ------------- |
+   | RPlidar A2M8            | **`115200`**  |
+   | RPlidar A2M12 / A3 / S1 | **`256000`**  |
+   | RPlidar S2 / S3         | **`1000000`** |
 
 3. Activate the Device
 
