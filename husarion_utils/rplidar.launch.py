@@ -5,7 +5,7 @@ from launch.actions import (
     IncludeLaunchDescription,
     GroupAction,
     OpaqueFunction,
-    ConditionalInclude,
+    ExecuteProcess,
 )
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -61,16 +61,14 @@ def launch_setup(context, *args, **kwargs):
     if healthcheck == 'False':
         create_health_status_file()
 
-    # Conditional healthcheck node
-    healthcheck_node = ConditionalInclude(
-        condition=IfCondition(healthcheck),
-        include=Node(
-            package="healthcheck_pkg",
-            executable="healthcheck_node",
-            name="healthcheck_rplidar",
-            namespace=device_namespace,
-            output="screen",
-        )
+    # Define the healthcheck node
+    healthcheck_node = Node(
+        package="healthcheck_pkg",
+        executable="healthcheck_node",
+        name="healthcheck_rplidar",
+        namespace=device_namespace,
+        output="screen",
+        condition=IfCondition(healthcheck)
     )
 
     return [PushRosNamespace(robot_namespace), rplidar_ns, healthcheck_node]
