@@ -1,15 +1,21 @@
+import os
 from launch import LaunchDescription
 from launch.actions import (
     DeclareLaunchArgument,
     IncludeLaunchDescription,
     GroupAction,
     OpaqueFunction,
+    ConditionalInclude,
 )
+from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node, PushRosNamespace, SetRemap
 from launch.substitutions import EnvironmentVariable, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.substitutions import FindPackageShare
 
+def create_health_status_file():
+    with open("/var/tmp/health_status.txt", "w") as file:
+        file.write("healthy")
 
 def launch_setup(context, *args, **kwargs):
     launch_file = LaunchConfiguration("launch_file").perform(context)
@@ -48,13 +54,23 @@ def launch_setup(context, *args, **kwargs):
 
     rplidar_ns = GroupAction(actions=rplidar_actions)
 
-    # Health check
-    healthcheck_node = Node(
-        package="healthcheck_pkg",
-        executable="healthcheck_node",
-        name="healthcheck_rplidar",
-        namespace=device_namespace,
-        output="screen",
+    # Retrieve the healthcheck argument
+    healthcheck = LaunchConfiguration("healthcheck").perform(context)
+
+    # Conditional file creation based on the healthcheck argument
+    if healthcheck == 'False':
+        create_health_status_file()
+
+    # Conditional healthcheck node
+    healthcheck_node = ConditionalInclude(
+        condition=IfCondition(healthcheck),
+        include=Node(
+            package="healthcheck_pkg",
+            executable="healthcheck_node",
+            name="healthcheck_rplidar",
+            namespace=device_namespace,
+            output="screen",
+        )
     )
 
     return [PushRosNamespace(robot_namespace), rplidar_ns, healthcheck_node]
@@ -87,6 +103,11 @@ def generate_launch_description():
                 "device_namespace",
                 default_value="",
                 description="Sensor namespace that will appear before all non absolute topics and TF frames, used for distinguishing multiple cameras on the same robot.",
+            ),
+            DeclareLaunchArgument(
+                "healthcheck",
+                default_value="False",
+                description="Enable health check for RPLIDAR.",
             ),
             OpaqueFunction(function=launch_setup),
         ]
