@@ -6,7 +6,7 @@ x-common-config:
 
 services:
   rplidar:
-    image: husarion/rplidar:humble
+    image: husarion/rplidar:jazzy
     # build:
     #   context: ..
     #   dockerfile: Dockerfile
@@ -17,17 +17,16 @@ services:
     command: >
       ros2 launch /husarion_utils/rplidar.launch.yaml
         channel_type:=serial
-        serial_baudrate:=${RPLIDAR_BAUDRATE:-115200}
+        serial_baudrate:=${RPLIDAR_BAUDRATE:?Error: baudrate unset in .env}
 
-  # --- IP-based examples (uncomment one and remove the `rplidar` service above) ---
   # rplidar-udp:
   #   image: husarion/rplidar:humble
   #   <<: *common-config
   #   command: >
   #     ros2 launch /husarion_utils/rplidar.launch.yaml
   #       channel_type:=udp
-  #       udp_ip:=${RPLIDAR_UDP_IP:-192.168.11.2}
-  #       udp_port:=${RPLIDAR_UDP_PORT:-8089}
+  #       udp_ip:=${RPLIDAR_UDP_IP:?Error: UDP IP unset in .env}
+  #       udp_port:=${RPLIDAR_UDP_PORT:?Error: UDP port unset in .env}
   #       scan_mode:=Sensitivity
   #
   # rplidar-tcp:
@@ -36,11 +35,11 @@ services:
   #   command: >
   #     ros2 launch /husarion_utils/rplidar.launch.yaml
   #       channel_type:=tcp
-  #       tcp_ip:=${RPLIDAR_TCP_IP:-192.168.0.7}
-  #       tcp_port:=${RPLIDAR_TCP_PORT:-20108}
+  #       tcp_ip:=${RPLIDAR_TCP_IP:?Error: TCP IP unset in .env}
+  #       tcp_port:=${RPLIDAR_TCP_PORT:?Error: TCP port unset in .env}
 
   rviz:
-    image: husarion/rviz2:humble
+    image: husarion/rviz2:jazzy
     <<: *common-config
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
