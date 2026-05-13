@@ -21,42 +21,34 @@ You can use `lsusb` command to check if the device is visible.
    cd rplidar-docker/demo
    ```
 
-2. Pick the channel + parameters for your model
+2. Configure `demo/.env` for your model
 
-   The wrapper invokes `sllidar_node` directly with the parameters you set.
-   Pick `channel_type` and the channel-specific args based on your hardware:
+   `compose.yaml` defines three rplidar services — `rplidar-serial`,
+   `rplidar-tcp`, `rplidar-udp` — gated by Compose profiles. Pick the profile
+   matching your hardware via `COMPOSE_PROFILES` in `demo/.env` and uncomment
+   the matching parameter block:
 
-   | **Model**           | **`channel_type`** | **Other settings**                                              |
-   | ------------------- | ------------------ | --------------------------------------------------------------- |
-   | A1, A2M8            | `serial`           | `serial_baudrate=115200`, `scan_mode=Sensitivity`               |
-   | A2M7, A2M12, A3     | `serial`           | `serial_baudrate=256000`, `scan_mode=Sensitivity`               |
-   | C1                  | `serial`           | `serial_baudrate=460800`, `scan_mode=Standard`                  |
-   | S1                  | `serial`           | `serial_baudrate=256000`                                        |
-   | S1 (TCP)            | `tcp`              | `tcp_ip=192.168.0.7`, `tcp_port=20108`                          |
-   | S2, S3              | `serial`           | `serial_baudrate=1000000`, `scan_mode=DenseBoost`               |
-   | S2E, T1             | `udp`              | `udp_ip=192.168.11.2`, `udp_port=8089`, `scan_mode=Sensitivity` |
+   | **Model**           | **`COMPOSE_PROFILES`** | **Other settings**                                     |
+   | ------------------- | ---------------------- | ------------------------------------------------------ |
+   | A1, A2M8            | `serial`               | `RPLIDAR_BAUDRATE=115200`                              |
+   | A2M7, A2M12, A3     | `serial`               | `RPLIDAR_BAUDRATE=256000`                              |
+   | C1                  | `serial`               | `RPLIDAR_BAUDRATE=460800`                              |
+   | S1                  | `serial`               | `RPLIDAR_BAUDRATE=256000`                              |
+   | S1 (TCP)            | `tcp`                  | `RPLIDAR_TCP_IP=192.168.0.7`, `RPLIDAR_TCP_PORT=20108` |
+   | S2, S3              | `serial`               | `RPLIDAR_BAUDRATE=1000000`                             |
+   | S2E, T1             | `udp`                  | `RPLIDAR_UDP_IP=192.168.11.2`, `RPLIDAR_UDP_PORT=8089` |
 
-   For serial models, export the baudrate via the env var used by `compose.yaml`:
+   Each profile requires its own variables — starting a service without them
+   aborts with a message pointing you to `demo/.env`.
 
-   ```bash
-   export RPLIDAR_BAUDRATE=<baudrate>
-   ```
-
-   For IP-based models (T1, S2E, S1_TCP) — uncomment the matching service in
-   `compose.yaml` and remove the default `rplidar` service.
-
-3. Activate the Device
-
-   ```bash
-   docker compose up rplidar
-   ```
-
-4. Launch Visualization
+3. Activate the Device and Visualization
 
    ```bash
    xhost local:root
-   docker compose up rviz
+   docker compose up
    ```
+
+   Only the rplidar service for the active profile starts, alongside `rviz`.
 
 > [!NOTE]
 > To use the latest version of the image, run the `docker compose pull` command.

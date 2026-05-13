@@ -4,39 +4,40 @@ x-common-config:
   ipc: host
   env_file: .env
 
+x-rplidar-image: &rplidar-image
+  image: husarion/rplidar:jazzy
+  # build:
+  #   context: ..
+  #   dockerfile: Dockerfile
+
 services:
-  rplidar:
-    image: husarion/rplidar:jazzy
-    # build:
-    #   context: ..
-    #   dockerfile: Dockerfile
-    <<: *common-config
-    # Serial models only - drop this `devices:` block for IP-based models (T1/S2E/S1_TCP).
+  rplidar-serial:
+    profiles: [serial]
+    <<: [*rplidar-image, *common-config]
     devices:
-      - /dev/ttyUSB0
+      - ${RPLIDAR_SERIAL_DEVICE:-/dev/ttyUSB0}
     command: >
       ros2 launch /husarion_utils/rplidar.launch.yaml
         channel_type:=serial
-        serial_baudrate:=${RPLIDAR_BAUDRATE:?Error: baudrate unset in .env}
+        serial_baudrate:=${RPLIDAR_BAUDRATE:?set RPLIDAR_BAUDRATE in demo/.env (see README for your model)}
 
-  # rplidar-udp:
-  #   image: husarion/rplidar:humble
-  #   <<: *common-config
-  #   command: >
-  #     ros2 launch /husarion_utils/rplidar.launch.yaml
-  #       channel_type:=udp
-  #       udp_ip:=${RPLIDAR_UDP_IP:?Error: UDP IP unset in .env}
-  #       udp_port:=${RPLIDAR_UDP_PORT:?Error: UDP port unset in .env}
-  #       scan_mode:=Sensitivity
-  #
-  # rplidar-tcp:
-  #   image: husarion/rplidar:humble
-  #   <<: *common-config
-  #   command: >
-  #     ros2 launch /husarion_utils/rplidar.launch.yaml
-  #       channel_type:=tcp
-  #       tcp_ip:=${RPLIDAR_TCP_IP:?Error: TCP IP unset in .env}
-  #       tcp_port:=${RPLIDAR_TCP_PORT:?Error: TCP port unset in .env}
+  rplidar-tcp:
+    profiles: [tcp]
+    <<: [*rplidar-image, *common-config]
+    command: >
+      ros2 launch /husarion_utils/rplidar.launch.yaml
+        channel_type:=tcp
+        tcp_ip:=${RPLIDAR_TCP_IP:?set RPLIDAR_TCP_IP in demo/.env}
+        tcp_port:=${RPLIDAR_TCP_PORT:?set RPLIDAR_TCP_PORT in demo/.env}
+
+  rplidar-udp:
+    profiles: [udp]
+    <<: [*rplidar-image, *common-config]
+    command: >
+      ros2 launch /husarion_utils/rplidar.launch.yaml
+        channel_type:=udp
+        udp_ip:=${RPLIDAR_UDP_IP:?set RPLIDAR_UDP_IP in demo/.env}
+        udp_port:=${RPLIDAR_UDP_PORT:?set RPLIDAR_UDP_PORT in demo/.env}
 
   rviz:
     image: husarion/rviz2:jazzy
