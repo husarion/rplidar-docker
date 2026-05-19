@@ -1,3 +1,9 @@
+# Usage:
+#   1. In demo/.env set COMPOSE_PROFILES to one of: serial | tcp | udp
+#   2. Fill in the matching variables in demo/.env (see README for your model).
+#   3. Run:  docker compose up
+# Only the rplidar service for the active profile starts; rviz always runs.
+
 x-common-config:
   &common-config
   network_mode: host
@@ -6,9 +12,6 @@ x-common-config:
 
 x-rplidar-image: &rplidar-image
   image: husarion/rplidar:jazzy
-  # build:
-  #   context: ..
-  #   dockerfile: Dockerfile
 
 services:
   rplidar-serial:
