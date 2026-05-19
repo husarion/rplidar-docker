@@ -1,24 +1,49 @@
+# Usage:
+#   1. In demo/.env set COMPOSE_PROFILES to one of: serial | tcp | udp
+#   2. Fill in the matching variables in demo/.env (see README for your model).
+#   3. Run:  docker compose up
+# Only the rplidar service for the active profile starts; rviz always runs.
+
 x-common-config:
   &common-config
   network_mode: host
   ipc: host
   env_file: .env
 
+x-rplidar-image: &rplidar-image
+  image: husarion/rplidar:jazzy
+
 services:
-  rplidar:
-    image: husarion/rplidar:humble
-    # build:
-    #   context: ..
-    #   dockerfile: Dockerfile
-    <<: *common-config
+  rplidar-serial:
+    profiles: [serial]
+    <<: [*rplidar-image, *common-config]
     devices:
-      - /dev/ttyUSB0
+      - ${RPLIDAR_SERIAL_DEVICE:-/dev/ttyUSB0}
     command: >
-      ros2 launch /husarion_utils/rplidar.launch.py
-        serial_baudrate:=${RPLIDAR_BAUDRATE:-115200}
+      ros2 launch /husarion_utils/rplidar.launch.yaml
+        channel_type:=serial
+        serial_baudrate:=${RPLIDAR_BAUDRATE:?set RPLIDAR_BAUDRATE in demo/.env (see README for your model)}
+
+  rplidar-tcp:
+    profiles: [tcp]
+    <<: [*rplidar-image, *common-config]
+    command: >
+      ros2 launch /husarion_utils/rplidar.launch.yaml
+        channel_type:=tcp
+        tcp_ip:=${RPLIDAR_TCP_IP:?set RPLIDAR_TCP_IP in demo/.env}
+        tcp_port:=${RPLIDAR_TCP_PORT:?set RPLIDAR_TCP_PORT in demo/.env}
+
+  rplidar-udp:
+    profiles: [udp]
+    <<: [*rplidar-image, *common-config]
+    command: >
+      ros2 launch /husarion_utils/rplidar.launch.yaml
+        channel_type:=udp
+        udp_ip:=${RPLIDAR_UDP_IP:?set RPLIDAR_UDP_IP in demo/.env}
+        udp_port:=${RPLIDAR_UDP_PORT:?set RPLIDAR_UDP_PORT in demo/.env}
 
   rviz:
-    image: husarion/rviz2:humble
+    image: husarion/rviz2:jazzy
     <<: *common-config
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw

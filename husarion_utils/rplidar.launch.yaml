@@ -1,0 +1,120 @@
+# Copyright 2024 Husarion sp. z o.o.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+launch:
+
+  - arg:
+      name: channel_type
+      default: serial
+      description: Communication channel (serial, udp or tcp).
+      choice:
+        - value: serial
+        - value: udp
+        - value: tcp
+
+  - arg:
+      name: serial_port
+      default: /dev/ttyUSB0
+      description: Serial port path (serial channel only).
+
+  - arg:
+      name: serial_baudrate
+      default: '256000'
+      description: Serial baudrate (serial channel only).
+
+  - arg:
+      name: udp_ip
+      default: 192.168.11.2
+      description: UDP IP of the lidar (udp channel only; e.g. T1, S2E).
+
+  - arg:
+      name: udp_port
+      default: '8089'
+      description: UDP port of the lidar (udp channel only).
+
+  - arg:
+      name: tcp_ip
+      default: 192.168.0.7
+      description: TCP IP of the lidar (tcp channel only; e.g. S1 over TCP).
+
+  - arg:
+      name: tcp_port
+      default: '20108'
+      description: TCP port of the lidar (tcp channel only).
+
+  - arg:
+      name: inverted
+      default: 'false'
+      description: Invert scan data.
+      choice:
+        - value: 'true'
+        - value: 'false'
+
+  - arg:
+      name: angle_compensate
+      default: 'true'
+      description: Enable angle compensation of scan data.
+      choice:
+        - value: 'true'
+        - value: 'false'
+
+  - arg:
+      name: scan_mode
+      default: ''
+      description: Lidar scan mode (DenseBoost, Sensitivity, Standard - depending on model).
+
+  - arg:
+      name: namespace
+      default: $(env ROBOT_NAMESPACE '')
+      description: Namespace for all topics (including /tf and /tf_static).
+
+  - arg:
+      name: name
+      default: ''
+      description: Sensor namespace prefixing topics and TF frames; distinguishes multiple lidars.
+
+  - let:
+      name: frame_id
+      value: $(eval "'$(var name)_link' if '$(var name)' else 'laser'")
+
+  - push_ros_namespace:
+      namespace: $(var namespace)
+
+  - node:
+      pkg: sllidar_ros2
+      exec: sllidar_node
+      name: sllidar_node
+      output: both
+      param:
+        - name: channel_type
+          value: $(var channel_type)
+        - name: serial_port
+          value: $(var serial_port)
+        - name: serial_baudrate
+          value: $(var serial_baudrate)
+        - name: udp_ip
+          value: $(var udp_ip)
+        - name: udp_port
+          value: $(var udp_port)
+        - name: tcp_ip
+          value: $(var tcp_ip)
+        - name: tcp_port
+          value: $(var tcp_port)
+        - name: frame_id
+          value: $(var frame_id)
+        - name: inverted
+          value: $(var inverted)
+        - name: angle_compensate
+          value: $(var angle_compensate)
+        - name: scan_mode
+          value: $(var scan_mode)

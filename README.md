@@ -21,52 +21,60 @@ You can use `lsusb` command to check if the device is visible.
    cd rplidar-docker/demo
    ```
 
-2. Select the Appropriate Baudrate
+2. Configure `demo/.env` for your model
 
-   ```bash
-   export RPLIDAR_BAUDRATE=<baudrate>
-   ```
+   `compose.yaml` defines three rplidar services — `rplidar-serial`,
+   `rplidar-tcp`, `rplidar-udp` — gated by Compose profiles. Pick the profile
+   matching your hardware via `COMPOSE_PROFILES` in `demo/.env` and uncomment
+   the matching parameter block:
 
-   Replace `<baudrate>` with appropriate baudrate for your LiDAR from below table.
+   | **Model**           | **`COMPOSE_PROFILES`** | **Other settings**                                     |
+   | ------------------- | ---------------------- | ------------------------------------------------------ |
+   | A1, A2M8            | `serial`               | `RPLIDAR_BAUDRATE=115200`                              |
+   | A2M7, A2M12, A3     | `serial`               | `RPLIDAR_BAUDRATE=256000`                              |
+   | C1                  | `serial`               | `RPLIDAR_BAUDRATE=460800`                              |
+   | S1                  | `serial`               | `RPLIDAR_BAUDRATE=256000`                              |
+   | S1 (TCP)            | `tcp`                  | `RPLIDAR_TCP_IP=192.168.0.7`, `RPLIDAR_TCP_PORT=20108` |
+   | S2, S3              | `serial`               | `RPLIDAR_BAUDRATE=1000000`                             |
+   | S2E, T1             | `udp`                  | `RPLIDAR_UDP_IP=192.168.11.2`, `RPLIDAR_UDP_PORT=8089` |
 
-   | **Product Name**        | **Baudrate**  |
-   | ----------------------- | ------------- |
-   | RPlidar A2M8            | **`115200`**  |
-   | RPlidar A2M12 / A3 / S1 | **`256000`**  |
-   | RPlidar S2 / S3         | **`1000000`** |
+   Each profile requires its own variables — starting a service without them
+   aborts with a message pointing you to `demo/.env`.
 
-3. Activate the Device
-
-   ```bash
-   docker compose up rplidar
-   ```
-
-4. Launch Visualization
+3. Activate the Device and Visualization
 
    ```bash
    xhost local:root
-   docker compose up rviz
+   docker compose up
    ```
+
+   Only the rplidar service for the active profile starts, alongside `rviz`.
 
 > [!NOTE]
 > To use the latest version of the image, run the `docker compose pull` command.
 
 ## Parameters
 
-Inside the image there is a custom `/husarion_utils/astra.launch.py` that is not the part of the ROS 2 package for Astra camera. It was added for easy integration with Husarion robots. This launch file contains following parameters:
+Inside the image there is a custom `/husarion_utils/rplidar.launch.yaml` that is not part of the upstream `sllidar_ros2` package. It was added for easy integration with Husarion robots. It accepts the following parameters:
 
-| **Parameter**   | **Description**                                                                                                                             | **Default Value**      |
+| **Parameter**      | **Description**                                                                                                                             | **Default Value**      |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| `launch_file`      | Name of launch file from repo `sllidar_ros2` to run                                                                                         | `sllidar_launch.py`    |
-| `serial_baudrate`  | Baudrate of connected lidar (depend on your RPlidar model)                                                                                  | `115200`               |
-| `serial_port`      | USB port of connected lidar                                                                                                                 | `/dev/ttyUSB0`         |
-| `robot_namespace`  | Namespace which will appear in front of all topics (including `/tf` and `/tf_static`).                                                      | `env("ROBOT_NAMESPACE")` (`""` if not specified) |
-| `device_namespace` | Sensor namespace that will appear before all non absolute topics and TF frames, used for distinguishing multiple cameras on the same robot. | `""`                   |
+| `channel_type`     | Communication channel: `serial`, `udp` or `tcp`                                                                                             | `serial`               |
+| `serial_baudrate`  | Baudrate (serial channel only)                                                                                                              | `256000`               |
+| `serial_port`      | USB port (serial channel only)                                                                                                              | `/dev/ttyUSB0`         |
+| `udp_ip`           | UDP IP of the lidar (udp channel only)                                                                                                      | `192.168.11.2`         |
+| `udp_port`         | UDP port (udp channel only)                                                                                                                 | `8089`                 |
+| `tcp_ip`           | TCP IP of the lidar (tcp channel only)                                                                                                      | `192.168.0.7`          |
+| `tcp_port`         | TCP port (tcp channel only)                                                                                                                 | `20108`                |
+| `inverted`         | Invert scan data                                                                                                                            | `false`                |
+| `angle_compensate` | Enable angle compensation                                                                                                                   | `true`                 |
+| `scan_mode`        | Lidar scan mode (`DenseBoost`, `Sensitivity`, `Standard`) — depends on model                                                                | `""`                   |
+| `namespace`        | ROS namespace prefixing all topics                                                                                                          | `env("ROBOT_NAMESPACE")` (`""` if not specified) |
+| `name`             | Prefix for the laser `frame_id` (becomes `<name>_link`); distinguishes multiple lidars on the same robot. If empty, `frame_id=laser`.       | `""`                   |
 
-Using both `device_namespace` and `robot_namespace` makes:
+Using both `name` and `namespace` makes:
 
-- Topic: `/<robot_namespace>/<device_namespace>/<default_topic>`
-- Topic TF: `/<robot_namesace>/tf`
-- URDF Link: `<device_namespace>_link` (default: `laser`)
+- Topic: `/<namespace>/<default_topic>`
+- URDF Link / `frame_id`: `<name>_link` (default: `laser`)
 
-If any of the namespaces are missing, the field with `/` is omitted for topics, or replaced with default ones for URDF link.
+If `namespace` is empty, the topic stays `/<default_topic>`. If `name` is empty, `frame_id` defaults to `laser`.
