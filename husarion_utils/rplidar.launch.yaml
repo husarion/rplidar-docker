@@ -85,7 +85,7 @@ launch:
 
   - let:
       name: frame_id
-      value: $(eval "'$(var name)_link' if '$(var name)' else 'laser'")
+      value: $(eval "'$(var name)' if '$(var name)' else 'laser'")
 
   - push_ros_namespace:
       namespace: $(var namespace)
@@ -93,7 +93,7 @@ launch:
   - node:
       pkg: sllidar_ros2
       exec: sllidar_node
-      name: sllidar_node
+      name: sllidar
       output: both
       param:
         - name: channel_type
