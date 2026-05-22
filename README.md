@@ -70,11 +70,13 @@ Inside the image there is a custom `/husarion_utils/rplidar.launch.yaml` that is
 | `angle_compensate` | Enable angle compensation                                                                                                                   | `true`                 |
 | `scan_mode`        | Lidar scan mode (`DenseBoost`, `Sensitivity`, `Standard`) — depends on model                                                                | `""`                   |
 | `namespace`        | ROS namespace prefixing all topics                                                                                                          | `env("ROBOT_NAMESPACE")` (`""` if not specified) |
-| `name`             | Prefix for the laser `frame_id` (becomes `<name>_link`); distinguishes multiple lidars on the same robot. If empty, `frame_id=laser`.       | `""`                   |
+| `name`             | Node name; distinguishes multiple lidars on the same robot.                                                                                 | `sllidar_node`         |
+| `frame_id`         | TF `frame_id` of the laser scan.                                                                                                            | `laser`                |
 
-Using both `name` and `namespace` makes:
+Using `namespace`, `name` and `frame_id` together:
 
 - Topic: `/<namespace>/<default_topic>`
-- URDF Link / `frame_id`: `<name>_link` (default: `laser`)
+- Node name: `<name>`
+- TF frame: `<frame_id>`
 
-If `namespace` is empty, the topic stays `/<default_topic>`. If `name` is empty, `frame_id` defaults to `laser`.
+If `namespace` is empty, topics stay at `/<default_topic>`.

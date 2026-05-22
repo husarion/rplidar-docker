@@ -80,12 +80,13 @@ launch:
 
   - arg:
       name: name
-      default: ''
-      description: Sensor namespace prefixing topics and TF frames; distinguishes multiple lidars.
+      default: sllidar
+      description: Node name; distinguishes multiple lidars on the same robot.
 
-  - let:
+  - arg:
       name: frame_id
-      value: $(eval "'$(var name)' if '$(var name)' else 'laser'")
+      default: laser
+      description: TF frame_id of the laser scan.
 
   - push_ros_namespace:
       namespace: $(var namespace)
@@ -93,7 +94,7 @@ launch:
   - node:
       pkg: sllidar_ros2
       exec: sllidar_node
-      name: sllidar
+      name: $(var name)
       output: both
       param:
         - name: channel_type
